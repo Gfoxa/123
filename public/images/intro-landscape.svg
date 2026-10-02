@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi placeholder perbukitan</title>
+  <desc id="desc">Lembah hijau dan jalur kecil di bawah langit pagi.</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#d3ded0"/><stop offset="1" stop-color="#f0dfbb"/></linearGradient></defs>
+  <path fill="url(#sky)" d="M0 0h1000v760H0z"/><circle cx="738" cy="170" r="76" fill="#e2b66d" opacity=".8"/>
+  <path fill="#9daf91" d="m0 392 171-171 119 124 155-194 186 218 157-150 212 174v367H0z"/>
+  <path fill="#607c5e" d="m0 490 208-174 166 177 177-162 183 171 116-110 150 121v247H0z"/>
+  <path fill="#354f3c" d="m0 567 177-115 163 130 161-111 181 135 149-115 169 100v169H0z"/>
+  <path d="M482 760c20-102 26-153 91-218 40-39 93-60 123-92 28-30 37-58 49-103" fill="none" stroke="#d8bf91" stroke-width="26"/>
+  <path d="M482 760c20-102 26-153 91-218 40-39 93-60 123-92 28-30 37-58 49-103" fill="none" stroke="#f1dfb8" stroke-width="14"/>
+</svg>
