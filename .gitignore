@@ -3,6 +3,7 @@ node_modules/
 .npm-cache/
 .npm-logs/
 .tmp/
+.superpowers/
 out/
 build/
 coverage/
