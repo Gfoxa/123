@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import { GalleryGrid } from "@/components/gallery-grid";
 import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { getPublicGallery } from "@/server/cms/public-content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Galeri Kegiatan Outdoor",
-  description: "Jelajahi kategori ilustrasi demo kegiatan outbound, petualangan, konservasi, edukasi, dan komunitas.",
-  alternates: { canonical: "/galeri" },
-};
+export const metadata: Metadata = pageMetadata("Galeri Kegiatan Outdoor", "Jelajahi kategori ilustrasi demo kegiatan outbound, petualangan, konservasi, edukasi, dan komunitas.", "/galeri");
 
 export default async function GalleryPage() {
   const { items, isDemo } = await getPublicGallery();

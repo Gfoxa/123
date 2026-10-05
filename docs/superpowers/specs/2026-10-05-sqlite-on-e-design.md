@@ -13,7 +13,7 @@ Move Ruang Rimba's local application database from PostgreSQL to a SQLite file s
 
 ## Design
 
-- Use Prisma ORM 7 with the official `@prisma/adapter-better-sqlite3` driver adapter.
+- Use Prisma ORM 7 with `@prisma/adapter-libsql` in embedded local-file mode.
 - Configure the local URL as `file:./prisma/ruang-rimba.db`, which resolves inside this project directory on E: in both the current WSL setup and Windows Node.js.
 - Add a SQLite-specific migration directory and point `prisma.config.ts` to it. Retain the PostgreSQL migration history as legacy source rather than applying PostgreSQL SQL to SQLite.
 - Update the SQLite schema by removing PostgreSQL-only native annotations while preserving model fields, UUID string IDs, relations, indexes, and enum-like values.
@@ -37,4 +37,8 @@ The migration copies users and authentication records, CMS categories and conten
 
 ## Reference
 
-Prisma 7 SQLite connector and `better-sqlite3` adapter: <https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite>.
+Prisma 7 SQLite connector: <https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/sqlite>.
+
+## Implementation adjustment
+
+The `better-sqlite3` adapter could not install in the current WSL environment because it has no `make` compiler toolchain. The selected libSQL adapter successfully opened and queried a local SQLite file in this environment, so it is used for the same on-disk database goal without adding a native build requirement.

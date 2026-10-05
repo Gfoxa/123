@@ -5,12 +5,9 @@ import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { ButtonLink } from "@/components/ui/button-link";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getPublicConservationProjects } from "@/server/cms/public-content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Konservasi Alam dan Komunitas",
-  description: "Kenali contoh pendekatan edukasi lingkungan, pemulihan alam, dan kolaborasi komunitas Ruang Rimba.",
-  alternates: { canonical: "/konservasi" },
-};
+export const metadata: Metadata = pageMetadata("Konservasi Alam dan Komunitas", "Kenali contoh pendekatan edukasi lingkungan, pemulihan alam, dan kolaborasi komunitas Ruang Rimba.", "/konservasi");
 
 const conservationPrograms = [
   { title: "Penanaman dan perawatan", text: "Kegiatan dirancang bersama pengelola untuk memahami jenis tanaman, kondisi lokasi, dan perawatan jangka panjang." },
@@ -30,7 +27,7 @@ export default async function ConservationPage() {
       {projects.length > 0 && <section className="conservation-programs section-pad"><div className="container"><SectionHeading eyebrow="Dokumentasi organisasi" title="Proyek konservasi terbit." description="Informasi pada bagian ini dikelola oleh organisasi." /><div className="conservation-program-grid">{projects.map((project) => <article key={project.id}><span>{project.location || "Proyek"}</span><h3>{project.title}</h3><p>{project.summary}</p></article>)}</div></div></section>}
       <section className="impact-note"><div className="container impact-note__inner"><span className="impact-note__symbol" aria-hidden="true">i</span><div><p className="eyebrow">Data dampak</p><h2>Angka dampak belum tersedia.</h2><p>Halaman ini tidak menampilkan statistik konservasi karena data terverifikasi dari organisasi belum diberikan.</p></div></div></section>
       <section className="conservation-stories section-pad"><div className="container"><SectionHeading eyebrow="Baca lebih lanjut" title="Belajar dari hubungan kita dengan alam." description="Artikel berikut juga merupakan konten demo." /><div className="conservation-story-links"><Link href="/artikel/belajar-konservasi-dari-sungai"><span>01</span><strong>Belajar Konservasi dari Sungai</strong><span aria-hidden="true">↗</span></Link><Link href="/artikel/5-prinsip-bertualang-tanpa-merusak-alam"><span>02</span><strong>5 Prinsip Bertualang Tanpa Merusak Alam</strong><span aria-hidden="true">↗</span></Link></div></div></section>
-      <section className="detail-bottom-cta"><div className="container"><div><p className="eyebrow eyebrow--light">Berkegiatan bersama</p><h2>Ingin ikut kegiatan konservasi?</h2></div><ButtonLink href="/kontak" variant="light">Hubungi kami <span aria-hidden="true">↗</span></ButtonLink></div></section>
+      <section className="detail-bottom-cta"><div className="container"><div><p className="eyebrow eyebrow--light">Berkegiatan bersama</p><h2>Ingin ikut kegiatan konservasi?</h2></div><ButtonLink href="/kontak?program=konservasi" variant="light">Hubungi kami <span aria-hidden="true">↗</span></ButtonLink></div></section>
     </main>
   );
 }

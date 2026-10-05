@@ -9,5 +9,9 @@ build/
 coverage/
 .env*
 !.env.example
+prisma/*.db
+prisma/*.db-journal
+prisma/*.db-shm
+prisma/*.db-wal
 *.tsbuildinfo
 next-env.d.ts

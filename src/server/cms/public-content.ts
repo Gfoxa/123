@@ -32,7 +32,7 @@ export async function getPublicPrograms() {
   try {
     const rows = await prisma.program.findMany({ where: { status: "PUBLISHED" }, include: { category: true }, orderBy: { publishedAt: "desc" } });
     if (rows.length) return { items: rows.map((row) => cmsProgram(row)).filter((row): row is Program => row !== null), isDemo: false };
-  } catch { /* Use the clearly labeled demo fixture when PostgreSQL is unavailable. */ }
+  } catch { /* Use the clearly labeled demo fixture when the local database is unavailable. */ }
   return { items: demoPrograms, isDemo: true };
 }
 
@@ -52,7 +52,7 @@ export async function getPublicArticles() {
   try {
     const rows = await prisma.article.findMany({ where: { status: "PUBLISHED" }, include: { category: true }, orderBy: { publishedAt: "desc" } });
     if (rows.length) return { items: rows.map(cmsArticle), isDemo: false };
-  } catch { /* Use the clearly labeled demo fixture when PostgreSQL is unavailable. */ }
+  } catch { /* Use the clearly labeled demo fixture when the local database is unavailable. */ }
   return { items: demoArticles, isDemo: true };
 }
 
@@ -101,7 +101,7 @@ export async function getPublicGallery() {
         image: row.imageUrl, alt: row.alt, caption: row.caption ?? "",
       })), isDemo: false,
     };
-  } catch { /* Use the clearly labeled demo gallery when PostgreSQL is unavailable. */ }
+  } catch { /* Use the clearly labeled demo gallery when the local database is unavailable. */ }
   const { galleryItems } = await import("@/lib/gallery");
   return { items: galleryItems, isDemo: true };
 }

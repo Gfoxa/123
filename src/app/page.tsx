@@ -6,12 +6,14 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { activities, organization, principles } from "@/lib/content";
 import { getPublicArticles, getPublicPrograms, getPublicSettings } from "@/server/cms/public-content";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export default async function HomePage() {
   const [{ items: featuredPrograms, isDemo: programsDemo }, { items: featuredArticles, isDemo: articlesDemo }, settings] = await Promise.all([
     getPublicPrograms(), getPublicArticles(), getPublicSettings(),
   ]);
   const tones = ["moss", "clay", "fern", "sand", "stone"];
+  const whatsappUrl = buildWhatsAppUrl(settings.whatsapp, "Halo, saya ingin berdiskusi tentang program outdoor.");
   return (
     <main id="konten">
       <section className="hero" aria-labelledby="hero-title">
@@ -117,16 +119,11 @@ export default async function HomePage() {
 
       <section className="contact-band" id="hubungi">
         <div className="container contact-band__inner">
-          <div><p className="eyebrow eyebrow--light">Mari mulai percakapan</p><h2>Ada rencana kegiatan<br />di alam?</h2><p>{settings.whatsapp ? "Ceritakan kebutuhan program dan rencana kegiatanmu." : "Kontak resmi organisasi belum tersedia. Lengkapi informasi ini sebelum situs dipublikasikan."}</p></div>
-          {settings.whatsapp ? (
-            <a className="button button--light contact-band__button" href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Halo, saya ingin berdiskusi tentang program outdoor.")}`} aria-label="Hubungi organisasi melalui WhatsApp">
-              Mulai di WhatsApp <span aria-hidden="true">↗</span>
-            </a>
-          ) : (
-            <span className="button button--light contact-band__button contact-band__button--disabled" aria-disabled="true">
-              Tambahkan WhatsApp resmi <span aria-hidden="true">↗</span>
-            </span>
-          )}
+          <div><p className="eyebrow eyebrow--light">Mari mulai percakapan</p><h2>Ada rencana kegiatan<br />di alam?</h2><p>Ceritakan kebutuhan program dan rencana kegiatanmu.</p></div>
+          <div className="contact-band__actions">
+            {whatsappUrl && <a className="button button--light contact-band__button" href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Hubungi organisasi melalui WhatsApp, membuka tab baru">Mulai di WhatsApp <span aria-hidden="true">↗</span></a>}
+            <ButtonLink href="/kontak" variant="light" className="contact-band__button">Kirim permintaan program <span aria-hidden="true">↗</span></ButtonLink>
+          </div>
         </div>
       </section>
     </main>

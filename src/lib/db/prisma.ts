@@ -1,11 +1,12 @@
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { PrismaClient } from "@prisma/client";
+import { resolveSqliteUrl } from "./sqlite-url";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
-const connectionString = process.env.DATABASE_URL ?? "postgresql://missing:missing@127.0.0.1:5432/missing";
+const databaseUrl = process.env.DATABASE_URL ?? "file:./prisma/ruang-rimba.db";
 
 function createPrismaClient() {
-  return new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
+  return new PrismaClient({ adapter: new PrismaLibSql({ url: resolveSqliteUrl(databaseUrl) }) });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();

@@ -4,7 +4,7 @@ import { signOut } from "@/lib/auth";
 const links = [
   ["Ringkasan", "/admin"], ["Program", "/admin/program"], ["Artikel", "/admin/artikel"],
   ["Galeri", "/admin/galeri"], ["Tim", "/admin/tim"], ["Konservasi", "/admin/konservasi"],
-  ["Pengaturan situs", "/admin/settings"],
+  ["Permintaan", "/admin/permintaan"], ["Pengaturan situs", "/admin/settings"],
 ];
 
 export function AdminNavigation() {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { getPublicArticle, getPublicArticles } from "@/server/cms/public-content";
+import { robotsForDemoContent } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const { items } = await getPublicArticles();
@@ -12,13 +13,15 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const { item: article } = await getPublicArticle(slug);
+  const { item: article, isDemo } = await getPublicArticle(slug);
   if (!article) return { title: "Artikel tidak ditemukan" };
   return {
     title: article.title,
     description: article.excerpt,
     alternates: { canonical: `/artikel/${article.slug}` },
-    openGraph: { type: "article", title: `${article.title} | Ruang Rimba`, description: article.excerpt, images: [article.coverImage] },
+    robots: robotsForDemoContent(isDemo),
+    openGraph: { type: "article", title: `${article.title} | Ruang Rimba`, description: article.excerpt, url: `/artikel/${article.slug}`, images: [{ url: article.coverImage, alt: article.coverAlt }] },
+    twitter: { card: "summary_large_image", title: `${article.title} | Ruang Rimba`, description: article.excerpt, images: [article.coverImage] },
   };
 }
 

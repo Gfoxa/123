@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { navigation, organization } from "@/lib/content";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { getPublicSettings } from "@/server/cms/public-content";
 
 export async function Footer() {
@@ -13,6 +14,7 @@ export async function Footer() {
   ].filter((item): item is { label: string; href: string } => Boolean(item.href));
   const address = settings.address || settings.operationalArea;
   const email = settings.email;
+  const whatsappUrl = buildWhatsAppUrl(settings.whatsapp, "Halo, saya ingin berdiskusi tentang program outdoor.");
 
   return (
     <footer className="site-footer">
@@ -34,7 +36,7 @@ export async function Footer() {
             <p>{address || "[Tambahkan alamat dan area layanan]"}</p>
             {email ? <a href={`mailto:${email}`}>{email}</a> : <p>[Tambahkan email resmi]</p>}
             {settings.phone ? <a href={`tel:${settings.phone}`}>{settings.phone}</a> : null}
-            {settings.whatsapp ? <a href={`https://wa.me/${settings.whatsapp}`}>WhatsApp resmi</a> : <p>[Tambahkan WhatsApp resmi]</p>}
+            {whatsappUrl ? <a href={whatsappUrl} target="_blank" rel="noreferrer">WhatsApp resmi ↗</a> : <p>[Tambahkan WhatsApp resmi]</p>}
             <div className="footer-social">
               <h2>Media sosial</h2>
               {socialLinks.length ? socialLinks.map((item) => <a key={item.label} href={item.href} target="_blank" rel="noreferrer">{item.label} ↗</a>) : <p>[Tambahkan tautan resmi]</p>}

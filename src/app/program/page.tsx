@@ -4,12 +4,9 @@ import Link from "next/link";
 import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { ButtonLink } from "@/components/ui/button-link";
 import { getPublicPrograms } from "@/server/cms/public-content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Program Outdoor dan Konservasi",
-  description: "Jelajahi contoh program outbound, team building, adventure, edukasi alam, dan konservasi Ruang Rimba.",
-  alternates: { canonical: "/program" },
-};
+export const metadata: Metadata = pageMetadata("Program Outdoor dan Konservasi", "Jelajahi contoh program outbound, team building, adventure, edukasi alam, dan konservasi Ruang Rimba.", "/program");
 
 export default async function ProgramsPage() {
   const { items: programs, isDemo } = await getPublicPrograms();
