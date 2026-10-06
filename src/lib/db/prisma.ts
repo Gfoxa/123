@@ -1,12 +1,15 @@
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
-import { resolveSqliteUrl } from "./sqlite-url";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
-const databaseUrl = process.env.DATABASE_URL ?? "file:./prisma/ruang-rimba.db";
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString?.startsWith("postgresql://") && !connectionString?.startsWith("postgres://")) {
+  throw new Error("DATABASE_URL harus menunjuk ke PostgreSQL.");
+}
 
 function createPrismaClient() {
-  return new PrismaClient({ adapter: new PrismaLibSql({ url: resolveSqliteUrl(databaseUrl) }) });
+  return new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();

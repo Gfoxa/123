@@ -1,8 +1,7 @@
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { getPublicSettings } from "@/server/cms/public-content";
+import type { PublicSettings } from "@/server/cms/public-content";
 
-export async function WhatsAppButton() {
-  const settings = await getPublicSettings();
+export function WhatsAppButton({ settings }: { settings: PublicSettings }) {
   const href = buildWhatsAppUrl(settings.whatsapp, "Halo, saya ingin mendapatkan informasi mengenai program outdoor.");
   if (!href) return null;
 

@@ -4,6 +4,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import "./globals.css";
 import { getPublicSettings } from "@/server/cms/public-content";
+import { buildOrganizationJsonLd } from "@/lib/structured-data";
+import { StructuredData } from "@/components/seo/structured-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -27,19 +29,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#f4f3ec",
+  themeColor: "#f4f3e7",
   colorScheme: "light",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const settings = await getPublicSettings();
+  const organizationJsonLd = buildOrganizationJsonLd(settings, siteUrl);
   return (
     <html lang="id">
       <body>
         <a className="skip-link" href="#konten">Lewati ke konten</a>
-        <Navbar />
+        {organizationJsonLd && <StructuredData data={organizationJsonLd} />}
+        <Navbar settings={settings} />
         {children}
-        <Footer />
-        <WhatsAppButton />
+        <Footer settings={settings} />
+        <WhatsAppButton settings={settings} />
       </body>
     </html>
   );

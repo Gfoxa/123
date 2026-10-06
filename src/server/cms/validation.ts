@@ -40,6 +40,11 @@ export const conservationProjectSchema = z.object({
   startedAt: dateOnly, status,
 });
 
+export const faqSchema = z.object({
+  question: requiredText(300), answer: requiredText(4000), category: requiredText(100),
+  sortOrder: z.coerce.number().int().min(0).max(9999), published: z.enum(["true", "false"]).transform((value) => value === "true"),
+});
+
 export const siteSettingsSchema = z.object({
   organizationName: requiredText(160), description: requiredText(1000), logoUrl: localImagePath,
   email: z.union([z.string().email(), z.literal("")]), phone: optionalText(80), whatsapp: z.union([z.string().regex(/^\d{8,15}$/), z.literal("")]).optional(),

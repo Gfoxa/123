@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
-import { resolveSqliteUrl } from "../src/lib/db/sqlite-url";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL harus diatur sebelum menjalankan seed.");
-const prisma = new PrismaClient({ adapter: new PrismaLibSql({ url: resolveSqliteUrl(connectionString) }) });
+const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 
 async function main() {
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();

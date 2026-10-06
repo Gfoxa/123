@@ -8,6 +8,8 @@ export type Article = {
   coverAlt: string;
   author: string;
   publishedAt: string;
+  publishedAtIso?: string;
+  authorName?: string;
   sections: ArticleSection[];
 };
 

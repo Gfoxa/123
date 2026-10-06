@@ -3,7 +3,7 @@ import { signOut } from "@/lib/auth";
 
 const links = [
   ["Ringkasan", "/admin"], ["Program", "/admin/program"], ["Artikel", "/admin/artikel"],
-  ["Galeri", "/admin/galeri"], ["Tim", "/admin/tim"], ["Konservasi", "/admin/konservasi"],
+  ["Galeri", "/admin/galeri"], ["Tim", "/admin/tim"], ["Konservasi", "/admin/konservasi"], ["FAQ", "/admin/faq"],
   ["Permintaan", "/admin/permintaan"], ["Pengaturan situs", "/admin/settings"],
 ];
 

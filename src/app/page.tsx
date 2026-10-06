@@ -2,15 +2,27 @@ import Image from "next/image";
 import { ActivityCard } from "@/components/activity-card";
 import { ProgramCard } from "@/components/program-card";
 import { StoryCard } from "@/components/story-card";
+import { GalleryPreview } from "@/components/gallery-preview";
 import { ButtonLink } from "@/components/ui/button-link";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { activities, organization, principles } from "@/lib/content";
-import { getPublicArticles, getPublicPrograms, getPublicSettings } from "@/server/cms/public-content";
+import { getPublicArticles, getPublicGallery, getPublicPrograms, getPublicSettings } from "@/server/cms/public-content";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import type { Metadata } from "next";
+import { hasConfiguredOrganizationIdentity, robotsForDemoContent } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [programs, articles, gallery, settings] = await Promise.all([
+    getPublicPrograms(), getPublicArticles(), getPublicGallery(), getPublicSettings(),
+  ]);
+  const isDemo = programs.isDemo || articles.isDemo || gallery.isDemo
+    || !hasConfiguredOrganizationIdentity(settings.organizationName, settings.description);
+  return { robots: robotsForDemoContent(isDemo) };
+}
 
 export default async function HomePage() {
-  const [{ items: featuredPrograms, isDemo: programsDemo }, { items: featuredArticles, isDemo: articlesDemo }, settings] = await Promise.all([
-    getPublicPrograms(), getPublicArticles(), getPublicSettings(),
+  const [{ items: featuredPrograms, isDemo: programsDemo }, { items: featuredArticles, isDemo: articlesDemo }, { items: galleryItems, isDemo: galleryDemo }, settings] = await Promise.all([
+    getPublicPrograms(), getPublicArticles(), getPublicGallery(), getPublicSettings(),
   ]);
   const tones = ["moss", "clay", "fern", "sand", "stone"];
   const whatsappUrl = buildWhatsAppUrl(settings.whatsapp, "Halo, saya ingin berdiskusi tentang program outdoor.");
@@ -27,12 +39,12 @@ export default async function HomePage() {
         />
         <div className="hero__scrim" />
         <div className="container hero__content">
-          <p className="eyebrow eyebrow--light">{settings.organizationName || "Ruang Rimba"} · ruang untuk tumbuh di alam</p>
-          <h1 id="hero-title">Bertualang,<br />belajar, dan<br /><em>menjaga alam.</em></h1>
-          <p className="hero__description">Pengalaman luar ruang yang membuka ruang untuk kebersamaan, pembelajaran, dan kepedulian.</p>
+          <p className="eyebrow eyebrow--light">{settings.organizationName || "Ruang Rimba"}</p>
+          <h1 id="hero-title">Bertualang,<br />Belajar, dan<br /><em>Menjaga Alam.</em></h1>
+          <p className="hero__description">Pengalaman outbound, petualangan, dan pembelajaran alam yang bermakna, sekaligus menumbuhkan kepedulian pada lingkungan.</p>
           <div className="hero__actions">
             <ButtonLink href="#program" variant="light">Jelajahi program <span aria-hidden="true">↗</span></ButtonLink>
-            <ButtonLink href="#hubungi" variant="outline">Hubungi kami</ButtonLink>
+            <ButtonLink href="/tentang-kami" variant="outline">Kenali kami <span aria-hidden="true">↗</span></ButtonLink>
           </div>
           <p className="hero__note">Visual ilustrasi demo · ganti dengan foto kegiatan organisasi</p>
         </div>
@@ -47,7 +59,7 @@ export default async function HomePage() {
             <h2>Pengalaman di alam bisa mengubah cara kita <em>melihat sekitar.</em></h2>
             <div className="intro__bottom">
               <p>{settings.description || organization.description}</p>
-              <ButtonLink href="#nilai" variant="outline">Cerita kami <span aria-hidden="true">↗</span></ButtonLink>
+              <ButtonLink href="/tentang-kami" variant="outline">Kenali kami <span aria-hidden="true">↗</span></ButtonLink>
             </div>
           </div>
           <div className="intro__image-wrap">
@@ -70,14 +82,14 @@ export default async function HomePage() {
 
       <section className="manifesto" id="konservasi">
         <div className="manifesto__visual">
-          <Image src="/images/conservation.svg" alt="Placeholder ilustrasi hutan tropis dan sungai" fill sizes="100vw" />
+          <Image src="/images/activity-river.svg" alt="Ilustrasi demo sungai di tengah lanskap hutan" fill sizes="100vw" />
           <div className="manifesto__shade" />
         </div>
         <div className="container manifesto__content">
           <p className="eyebrow eyebrow--light">Petualangan dengan kepedulian</p>
           <h2>Lebih dari<br />sekadar <em>perjalanan.</em></h2>
-          <p>Alam bukan hanya latar untuk beraktivitas. Ia adalah ruang hidup yang perlu kita kenali, hormati, dan jaga bersama.</p>
-          <ButtonLink href="#nilai" variant="light">Kenali pendekatan kami <span aria-hidden="true">↗</span></ButtonLink>
+          <p>Setiap perjalanan di alam adalah kesempatan untuk belajar cara merawatnya bersama.</p>
+          <ButtonLink href="/konservasi" variant="light">Lihat kegiatan konservasi <span aria-hidden="true">↗</span></ButtonLink>
         </div>
         <span className="manifesto__caption">Ilustrasi demo · visual konservasi aktual perlu ditambahkan</span>
       </section>
@@ -105,6 +117,22 @@ export default async function HomePage() {
           <div className="section-topline"><span>04 / Di lapangan</span><span>Contoh aktivitas, bukan dokumentasi nyata</span></div>
           <SectionHeading title="Ruang untuk pengalaman yang berkesan." description="Setiap kelompok punya cerita yang berbeda. Berikut inspirasi kegiatan yang dapat dikembangkan bersama." />
           <div className="activity-grid">{activities.map((activity, index) => <ActivityCard key={activity.title} {...activity} index={index} />)}</div>
+        </div>
+      </section>
+
+      <section className="impact-note" aria-labelledby="impact-title">
+        <div className="container impact-note__inner">
+          <span className="impact-note__symbol" aria-hidden="true">i</span>
+          <div><p className="eyebrow">Dampak yang bertanggung jawab</p><h2 id="impact-title">Data dampak terverifikasi belum tersedia.</h2><p>Kami tidak menampilkan angka kegiatan atau konservasi sebelum data organisasi dikonfirmasi.</p></div>
+        </div>
+      </section>
+
+      <section className="gallery-journal section-pad" aria-labelledby="gallery-title">
+        <div className="container">
+          <span className="visually-hidden" id="gallery-title">Galeri kegiatan</span>
+          <div className="section-topline"><span>Jurnal visual</span><span>{galleryDemo ? "Ilustrasi demo, bukan dokumentasi kegiatan" : "Dokumentasi kegiatan organisasi"}</span></div>
+          <div className="gallery-journal__heading"><SectionHeading title="Fragmen perjalanan." description="Sekilas tentang pengalaman luar ruang yang dapat dirancang bersama." /><ButtonLink href="/galeri" variant="outline">Kunjungi galeri <span aria-hidden="true">↗</span></ButtonLink></div>
+          <GalleryPreview items={galleryItems.slice(0, 3)} isDemo={galleryDemo} />
         </div>
       </section>
 

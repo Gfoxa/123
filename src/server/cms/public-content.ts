@@ -2,7 +2,25 @@ import "server-only";
 import { prisma } from "@/lib/db/prisma";
 import { organization } from "@/lib/content";
 import { articles as demoArticles, getArticle as getDemoArticle, type Article } from "@/lib/articles";
+import { faqs as demoFaqs } from "@/lib/faqs";
 import { getProgram as getDemoProgram, programs as demoPrograms, type Program } from "@/lib/programs";
+
+export type PublicSettings = {
+  [key: string]: string | undefined;
+  organizationName: string;
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  address: string;
+  operationalArea: string;
+  logoUrl?: string;
+  instagramUrl: string;
+  facebookUrl: string;
+  youtubeUrl: string;
+};
 
 function lines(value: string | null | undefined) { return value?.split("\n").map((line) => line.trim()).filter(Boolean) ?? []; }
 function cmsProgram(row: Awaited<ReturnType<typeof prisma.program.findFirst>> & { category?: { name: string } | null }): Program | null {
@@ -23,7 +41,8 @@ function cmsArticle(row: NonNullable<Awaited<ReturnType<typeof prisma.article.fi
   return {
     slug: row.slug, title: row.title, excerpt: row.excerpt, category: row.category?.name ?? "Artikel",
     coverImage: row.coverImage || "/images/story-nature.svg", coverAlt: row.coverImageAlt || `Gambar ${row.title}`,
-    author: row.authorName || "Tim Ruang Rimba", publishedAt: row.publishedAt?.toLocaleDateString("id-ID") ?? "",
+    author: row.authorName || "Tim Ruang Rimba", authorName: row.authorName || undefined,
+    publishedAt: row.publishedAt?.toLocaleDateString("id-ID") ?? "", publishedAtIso: row.publishedAt?.toISOString(),
     sections: [{ heading: row.title, paragraphs: body }],
   };
 }
@@ -68,8 +87,8 @@ export async function getPublicArticle(slug: string) {
   return { item: getDemoArticle(slug) ?? null, isDemo: true };
 }
 
-export async function getPublicSettings() {
-  const values: Record<string, string> = {
+export async function getPublicSettings(): Promise<PublicSettings> {
+  const values: PublicSettings = {
     organizationName: organization.name,
     description: organization.description,
     seoTitle: "Outbound & Konservasi Alam | Ruang Rimba",
@@ -79,6 +98,7 @@ export async function getPublicSettings() {
     whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
     address: process.env.NEXT_PUBLIC_ORGANIZATION_ADDRESS ?? "",
     operationalArea: "",
+    logoUrl: "",
     instagramUrl: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
     facebookUrl: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "",
     youtubeUrl: process.env.NEXT_PUBLIC_YOUTUBE_URL ?? "",
@@ -116,4 +136,13 @@ export async function getPublicConservationProjects() {
   try {
     return await prisma.conservationProject.findMany({ where: { status: "PUBLISHED" }, orderBy: { startedAt: "desc" } });
   } catch { return []; }
+}
+
+
+export async function getPublicFAQs() {
+  try {
+    const items = await prisma.fAQ.findMany({ where: { published: true }, orderBy: [{ category: "asc" }, { sortOrder: "asc" }] });
+    if (items.length) return { items, isDemo: false };
+  } catch { /* Keep the explicit demo fixtures available before database setup. */ }
+  return { items: demoFaqs, isDemo: true };
 }

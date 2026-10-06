@@ -7,7 +7,7 @@ import { organization, principles } from "@/lib/content";
 import { getPublicTeam } from "@/server/cms/public-content";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Tentang Kami", "Kenali pendekatan demo Ruang Rimba dalam kegiatan outdoor, pembelajaran alam, dan konservasi.", "/tentang-kami");
+export const metadata: Metadata = { ...pageMetadata("Tentang Kami", "Kenali pendekatan organisasi dalam kegiatan outdoor, pembelajaran alam, dan konservasi.", "/tentang-kami"), robots: { index: false, follow: false } };
 
 const missions = [
   "Merancang pengalaman luar ruang yang aman, inklusif, dan sesuai kebutuhan kelompok.",

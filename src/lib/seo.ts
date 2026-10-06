@@ -14,6 +14,15 @@ export function robotsForDemoContent(isDemo: boolean): Metadata["robots"] {
   return isDemo ? { index: false, follow: false } : undefined;
 }
 
+export function hasConfiguredOrganizationIdentity(name: string, description: string): boolean {
+  const cleanName = name.trim();
+  const cleanDescription = description.trim();
+  return Boolean(cleanName && cleanDescription)
+    && cleanName !== "Ruang Rimba"
+    && !cleanName.startsWith("[")
+    && !cleanDescription.includes("[Ganti dengan deskripsi organisasi]");
+}
+
 export function pageMetadata(title: string, description: string, pathname: string): Metadata {
   const socialTitle = `${title} | Ruang Rimba`;
   const image = "/images/hero-rimba.png";

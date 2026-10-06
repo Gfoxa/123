@@ -4,15 +4,15 @@ import type { Prisma } from "@prisma/client";
 import { nextPublishedAt } from "./publication";
 import { resolveSlug, slugify } from "@/lib/slug";
 import {
-  articleSchema, conservationProjectSchema, galleryImageSchema,
+  articleSchema, conservationProjectSchema, faqSchema, galleryImageSchema,
   programSchema, siteSettingsSchema, teamMemberSchema,
 } from "./validation";
 
-export type CmsEntity = "program" | "artikel" | "galeri" | "tim" | "konservasi";
+export type CmsEntity = "program" | "artikel" | "galeri" | "tim" | "konservasi" | "faq";
 export class CmsValidationError extends Error {}
 const entityPaths: Record<CmsEntity, string> = {
   program: "/admin/program", artikel: "/admin/artikel", galeri: "/admin/galeri",
-  tim: "/admin/tim", konservasi: "/admin/konservasi",
+  tim: "/admin/tim", konservasi: "/admin/konservasi", faq: "/admin/faq",
 };
 export function adminPath(entity: CmsEntity) { return entityPaths[entity]; }
 
@@ -40,15 +40,31 @@ export async function saveCmsEntity(entity: CmsEntity, actorId: string, formData
   const intent = formData.get("_intent");
   const data = formValues(formData);
 
-  if (intent === "archive") {
+  if (intent === "archive" || intent === "delete") {
     if (!id) throw new Error("ID konten tidak tersedia.");
+    const deleting = intent === "delete";
     return prisma.$transaction(async (tx) => {
-      if (entity === "program") await tx.program.update({ where: { id }, data: { status: "ARCHIVED" } });
-      else if (entity === "artikel") await tx.article.update({ where: { id }, data: { status: "ARCHIVED" } });
-      else if (entity === "galeri") await tx.galleryImage.update({ where: { id }, data: { status: "ARCHIVED" } });
-      else if (entity === "tim") await tx.teamMember.update({ where: { id }, data: { status: "ARCHIVED" } });
-      else await tx.conservationProject.update({ where: { id }, data: { status: "ARCHIVED" } });
-      await tx.auditLog.create({ data: { actorId, operation: "ARCHIVE", entity, entityId: id } });
+      if (entity === "program") {
+        if (deleting) await tx.program.delete({ where: { id } });
+        else await tx.program.update({ where: { id }, data: { status: "ARCHIVED" } });
+      } else if (entity === "artikel") {
+        if (deleting) await tx.article.delete({ where: { id } });
+        else await tx.article.update({ where: { id }, data: { status: "ARCHIVED" } });
+      } else if (entity === "galeri") {
+        if (deleting) await tx.galleryImage.delete({ where: { id } });
+        else await tx.galleryImage.update({ where: { id }, data: { status: "ARCHIVED" } });
+      } else if (entity === "tim") {
+        if (deleting) await tx.teamMember.delete({ where: { id } });
+        else await tx.teamMember.update({ where: { id }, data: { status: "ARCHIVED" } });
+      } else if (entity === "konservasi") {
+        if (deleting) await tx.conservationProject.delete({ where: { id } });
+        else await tx.conservationProject.update({ where: { id }, data: { status: "ARCHIVED" } });
+      } else if (deleting) {
+        await tx.fAQ.delete({ where: { id } });
+      } else {
+        await tx.fAQ.update({ where: { id }, data: { published: false } });
+      }
+      await tx.auditLog.create({ data: { actorId, operation: deleting ? "DELETE" : "ARCHIVE", entity, entityId: id } });
       return id;
     });
   }
@@ -57,6 +73,7 @@ export async function saveCmsEntity(entity: CmsEntity, actorId: string, formData
     : entity === "artikel" ? articleSchema.safeParse(data)
     : entity === "galeri" ? galleryImageSchema.safeParse(data)
     : entity === "tim" ? teamMemberSchema.safeParse(data)
+    : entity === "faq" ? faqSchema.safeParse(data)
     : conservationProjectSchema.safeParse(data);
   if (!parsed.success) throw new CmsValidationError(parsed.error.issues.map((issue) => issue.message).join(" "));
 
@@ -93,6 +110,10 @@ export async function saveCmsEntity(entity: CmsEntity, actorId: string, formData
       const value = parsed.data as typeof teamMemberSchema._output;
       const saved = id ? await tx.teamMember.update({ where: { id }, data: value }) : await tx.teamMember.create({ data: value });
       savedId = saved.id;
+    } else if (entity === "faq") {
+      const value = parsed.data as typeof faqSchema._output;
+      const saved = id ? await tx.fAQ.update({ where: { id }, data: value }) : await tx.fAQ.create({ data: value });
+      savedId = saved.id;
     } else {
       const value = parsed.data as typeof conservationProjectSchema._output;
       const saved = id ? await tx.conservationProject.update({ where: { id }, data: { ...value, startedAt: value.startedAt ? new Date(value.startedAt) : null } })
@@ -120,5 +141,6 @@ export async function listCms(entity: CmsEntity) {
   if (entity === "artikel") return prisma.article.findMany({ include: { category: true }, orderBy: { updatedAt: "desc" } });
   if (entity === "galeri") return prisma.galleryImage.findMany({ include: { category: true }, orderBy: { updatedAt: "desc" } });
   if (entity === "tim") return prisma.teamMember.findMany({ orderBy: [{ sortOrder: "asc" }, { updatedAt: "desc" }] });
+  if (entity === "faq") return prisma.fAQ.findMany({ orderBy: [{ category: "asc" }, { sortOrder: "asc" }] });
   return prisma.conservationProject.findMany({ orderBy: { updatedAt: "desc" } });
 }

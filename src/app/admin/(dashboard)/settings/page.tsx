@@ -19,5 +19,5 @@ export default async function SettingsAdminPage({ searchParams }: { searchParams
   try { values = Object.fromEntries((await prisma.siteSetting.findMany()).map(({ key, value }) => [key, value])); }
   catch { dbError = true; }
   const rows = [{ id: "settings", status: "Aktif", ...Object.fromEntries(fields.map(({ name }) => [name, values[name] ?? (name === "organizationName" ? "[Nama Organisasi]" : name === "seoTitle" ? "Outbound & Konservasi Alam | Ruang Rimba" : "")])) }];
-  return <CmsManager title="Pengaturan situs" description="Informasi ini digunakan pada konten publik dan metadata situs." fields={fields} rows={rows} action={saveSettings} allowArchive={false} error={error || (dbError ? "Database belum tersedia. Pengaturan belum dapat dimuat." : saved ? "Pengaturan berhasil disimpan." : undefined)} />;
+  return <CmsManager title="Pengaturan situs" description="Informasi ini digunakan pada konten publik dan metadata situs." fields={fields} rows={rows} action={saveSettings} allowArchive={false} allowDelete={false} error={error || (dbError ? "Database belum tersedia. Pengaturan belum dapat dimuat." : saved ? "Pengaturan berhasil disimpan." : undefined)} />;
 }

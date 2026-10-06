@@ -3,9 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { getPublicArticles } from "@/server/cms/public-content";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, robotsForDemoContent } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Artikel dan Jurnal Alam", "Baca contoh catatan tentang outdoor learning, konservasi, komunitas, dan tips beraktivitas di alam.", "/artikel");
+export async function generateMetadata(): Promise<Metadata> {
+  const { isDemo } = await getPublicArticles();
+  return { ...pageMetadata("Artikel dan Jurnal Alam", "Baca catatan tentang outdoor learning, konservasi, komunitas, dan tips beraktivitas di alam.", "/artikel"), robots: robotsForDemoContent(isDemo) };
+}
 
 export default async function ArticlesPage() {
   const { items: articles, isDemo } = await getPublicArticles();

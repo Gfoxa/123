@@ -7,4 +7,5 @@ export async function saveArticle(formData: FormData) { await saveCmsAction("art
 export async function saveGalleryImage(formData: FormData) { await saveCmsAction("galeri", formData); }
 export async function saveTeamMember(formData: FormData) { await saveCmsAction("tim", formData); }
 export async function saveConservationProject(formData: FormData) { await saveCmsAction("konservasi", formData); }
+export async function saveFaq(formData: FormData) { await saveCmsAction("faq", formData); }
 export async function saveSettings(formData: FormData) { await saveSettingsAction(formData); }

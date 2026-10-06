@@ -2,11 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { navigation, organization } from "@/lib/content";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { getPublicSettings } from "@/server/cms/public-content";
+import type { PublicSettings } from "@/server/cms/public-content";
 
-export async function Footer() {
+export function Footer({ settings }: { settings: PublicSettings }) {
   const year = new Date().getFullYear();
-  const settings = await getPublicSettings();
   const socialLinks = [
     { label: "Instagram", href: settings.instagramUrl },
     { label: "Facebook", href: settings.facebookUrl },
@@ -19,6 +18,7 @@ export async function Footer() {
   return (
     <footer className="site-footer">
       <div className="container">
+        <p className="footer-statement">Bertualang dengan bijak.<br /><em>Menjaga alam bersama.</em></p>
         <div className="footer-main">
           <div className="footer-brand">
             <Link className="brand brand--footer" href="/">

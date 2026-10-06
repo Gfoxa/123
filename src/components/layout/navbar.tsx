@@ -2,10 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { organization, navigation } from "@/lib/content";
 import { ButtonLink } from "@/components/ui/button-link";
-import { getPublicSettings } from "@/server/cms/public-content";
+import type { PublicSettings } from "@/server/cms/public-content";
 
-export async function Navbar() {
-  const settings = await getPublicSettings();
+export function Navbar({ settings }: { settings: PublicSettings }) {
   return (
     <header className="site-header">
       <div className="container site-header__inner">

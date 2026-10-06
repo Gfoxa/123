@@ -4,9 +4,12 @@ import Link from "next/link";
 import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { ButtonLink } from "@/components/ui/button-link";
 import { getPublicPrograms } from "@/server/cms/public-content";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, robotsForDemoContent } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Program Outdoor dan Konservasi", "Jelajahi contoh program outbound, team building, adventure, edukasi alam, dan konservasi Ruang Rimba.", "/program");
+export async function generateMetadata(): Promise<Metadata> {
+  const { isDemo } = await getPublicPrograms();
+  return { ...pageMetadata("Program Outdoor dan Konservasi", "Jelajahi program outbound, team building, adventure, edukasi alam, dan konservasi.", "/program"), robots: robotsForDemoContent(isDemo) };
+}
 
 export default async function ProgramsPage() {
   const { items: programs, isDemo } = await getPublicPrograms();

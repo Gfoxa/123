@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import { GalleryGrid } from "@/components/gallery-grid";
 import { PublicPageHeader } from "@/components/ui/public-page-header";
 import { getPublicGallery } from "@/server/cms/public-content";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, robotsForDemoContent } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Galeri Kegiatan Outdoor", "Jelajahi kategori ilustrasi demo kegiatan outbound, petualangan, konservasi, edukasi, dan komunitas.", "/galeri");
+export async function generateMetadata(): Promise<Metadata> {
+  const { isDemo } = await getPublicGallery();
+  return { ...pageMetadata("Galeri Kegiatan Outdoor", "Jelajahi dokumentasi outbound, petualangan, konservasi, edukasi, dan komunitas.", "/galeri"), robots: robotsForDemoContent(isDemo) };
+}
 
 export default async function GalleryPage() {
   const { items, isDemo } = await getPublicGallery();

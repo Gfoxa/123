@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { articleSchema, conservationProjectSchema, galleryImageSchema, programSchema, siteSettingsSchema } from "./validation";
+import { articleSchema, conservationProjectSchema, faqSchema, galleryImageSchema, programSchema, siteSettingsSchema } from "./validation";
 
 test("program requires a valid title, slug, category and description", () => {
   assert.equal(programSchema.safeParse({
@@ -51,4 +51,13 @@ test("conservation projects reject impossible calendar dates", () => {
   const project = { title: "Demo proyek", slug: "demo-proyek", summary: "Ringkasan demo", description: "Deskripsi demo", status: "DRAFT" };
   assert.equal(conservationProjectSchema.safeParse({ ...project, startedAt: "2026-10-02" }).success, true);
   assert.equal(conservationProjectSchema.safeParse({ ...project, startedAt: "2026-02-31" }).success, false);
+});
+
+
+test("FAQ content validates publication and ordering fields", () => {
+  const faq = { question: "Apakah program dapat disesuaikan?", answer: "Rancangan dibahas bersama sebelum kegiatan.", category: "Program", sortOrder: "2", published: "true" };
+  assert.deepEqual(faqSchema.parse(faq), { ...faq, sortOrder: 2, published: true });
+  assert.equal(faqSchema.safeParse({ ...faq, question: " " }).success, false);
+  assert.equal(faqSchema.safeParse({ ...faq, published: "on" }).success, false);
+  assert.equal(faqSchema.safeParse({ ...faq, sortOrder: "-1" }).success, false);
 });

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canonicalUrl, pageMetadata, robotsForDemoContent } from "@/lib/seo";
+import { canonicalUrl, hasConfiguredOrganizationIdentity, pageMetadata, robotsForDemoContent } from "@/lib/seo";
 
 test("canonical URLs retain the requested route under a configured site origin", () => {
   assert.equal(canonicalUrl("https://ruangrimba.example/", "/program/kelas-alam"), "https://ruangrimba.example/program/kelas-alam");
@@ -30,4 +30,10 @@ test("page metadata uses route-specific Open Graph and X card content", () => {
     description: "Jelajahi kegiatan alam.",
     images: ["/images/hero-rimba.png"],
   });
+});
+
+test("organization identity must be configured before public metadata is indexable", () => {
+  assert.equal(hasConfiguredOrganizationIdentity("Ruang Rimba", "[Ganti dengan deskripsi organisasi]"), false);
+  assert.equal(hasConfiguredOrganizationIdentity("[Nama Organisasi]", "Deskripsi sementara"), false);
+  assert.equal(hasConfiguredOrganizationIdentity("Organisasi Alam", "Mendampingi pembelajaran luar ruang."), true);
 });

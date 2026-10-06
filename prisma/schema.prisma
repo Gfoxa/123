@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 enum UserRole {
@@ -24,7 +24,7 @@ enum SubmissionStatus {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String    @id @default(uuid()) @db.Uuid
   name          String?
   email         String    @unique
   emailVerified DateTime?
@@ -42,8 +42,8 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(uuid())
-  userId            String
+  id                String  @id @default(uuid()) @db.Uuid
+  userId            String @db.Uuid
   type              String
   provider          String
   providerAccountId String
@@ -61,9 +61,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(uuid())
+  id           String   @id @default(uuid()) @db.Uuid
   sessionToken String   @unique
-  userId       String
+  userId       String @db.Uuid
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -79,7 +79,7 @@ model VerificationToken {
 }
 
 model ProgramCategory {
-  id        String    @id @default(uuid())
+  id        String    @id @default(uuid()) @db.Uuid
   name      String    @unique
   slug      String    @unique
   programs  Program[]
@@ -88,10 +88,10 @@ model ProgramCategory {
 }
 
 model Program {
-  id                String        @id @default(uuid())
+  id                String        @id @default(uuid()) @db.Uuid
   title             String
   slug              String        @unique
-  categoryId        String?
+  categoryId        String? @db.Uuid
   category          ProgramCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   shortDescription  String
   description       String
@@ -115,7 +115,7 @@ model Program {
 }
 
 model ArticleCategory {
-  id        String    @id @default(uuid())
+  id        String    @id @default(uuid()) @db.Uuid
   name      String    @unique
   slug      String    @unique
   articles  Article[]
@@ -124,16 +124,16 @@ model ArticleCategory {
 }
 
 model Article {
-  id           String          @id @default(uuid())
+  id           String          @id @default(uuid()) @db.Uuid
   title        String
   slug         String          @unique
   excerpt      String
   content      String
   coverImage   String?
   coverImageAlt String?
-  categoryId   String?
+  categoryId   String? @db.Uuid
   category     ArticleCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  authorId     String?
+  authorId     String? @db.Uuid
   author       User?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
   authorName   String?
   status       ContentStatus   @default(DRAFT)
@@ -147,7 +147,7 @@ model Article {
 }
 
 model GalleryCategory {
-  id        String         @id @default(uuid())
+  id        String         @id @default(uuid()) @db.Uuid
   name      String         @unique
   slug      String         @unique
   images    GalleryImage[]
@@ -156,12 +156,12 @@ model GalleryCategory {
 }
 
 model GalleryImage {
-  id          String          @id @default(uuid())
+  id          String          @id @default(uuid()) @db.Uuid
   title       String
   imageUrl    String
   alt         String
   caption     String?
-  categoryId  String?
+  categoryId  String? @db.Uuid
   category    GalleryCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   status      ContentStatus   @default(DRAFT)
   publishedAt DateTime?
@@ -173,7 +173,7 @@ model GalleryImage {
 }
 
 model TeamMember {
-  id        String        @id @default(uuid())
+  id        String        @id @default(uuid()) @db.Uuid
   name      String
   role      String
   biography String
@@ -188,7 +188,7 @@ model TeamMember {
 }
 
 model ConservationProject {
-  id          String        @id @default(uuid())
+  id          String        @id @default(uuid()) @db.Uuid
   title       String
   slug        String        @unique
   summary     String
@@ -205,7 +205,7 @@ model ConservationProject {
 }
 
 model ContactSubmission {
-  id               String           @id @default(uuid())
+  id               String           @id @default(uuid()) @db.Uuid
   name             String
   email            String
   phone            String
@@ -232,7 +232,7 @@ model ContactRateLimit {
 }
 
 model SiteSetting {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   key       String   @unique
   value     String
   createdAt DateTime @default(now())
@@ -240,7 +240,8 @@ model SiteSetting {
 }
 
 model FAQ {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
+  category  String   @default("Program")
   question  String
   answer    String
   sortOrder Int      @default(0)
@@ -252,8 +253,8 @@ model FAQ {
 }
 
 model AuditLog {
-  id         String   @id @default(uuid())
-  actorId    String?
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String? @db.Uuid
   actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
   operation  String
   entity     String

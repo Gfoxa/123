@@ -1,0 +1,39 @@
+-- Convert generated UUID identifiers from text to PostgreSQL native UUID columns.
+ALTER TABLE "Account" DROP CONSTRAINT "Account_userId_fkey";
+ALTER TABLE "Session" DROP CONSTRAINT "Session_userId_fkey";
+ALTER TABLE "Program" DROP CONSTRAINT "Program_categoryId_fkey";
+ALTER TABLE "Article" DROP CONSTRAINT "Article_categoryId_fkey";
+ALTER TABLE "Article" DROP CONSTRAINT "Article_authorId_fkey";
+ALTER TABLE "GalleryImage" DROP CONSTRAINT "GalleryImage_categoryId_fkey";
+ALTER TABLE "AuditLog" DROP CONSTRAINT "AuditLog_actorId_fkey";
+
+ALTER TABLE "User" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Account" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Account" ALTER COLUMN "userId" TYPE UUID USING "userId"::UUID;
+ALTER TABLE "Session" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Session" ALTER COLUMN "userId" TYPE UUID USING "userId"::UUID;
+ALTER TABLE "ProgramCategory" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Program" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Program" ALTER COLUMN "categoryId" TYPE UUID USING "categoryId"::UUID;
+ALTER TABLE "ArticleCategory" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Article" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "Article" ALTER COLUMN "categoryId" TYPE UUID USING "categoryId"::UUID;
+ALTER TABLE "Article" ALTER COLUMN "authorId" TYPE UUID USING "authorId"::UUID;
+ALTER TABLE "GalleryCategory" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "GalleryImage" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "GalleryImage" ALTER COLUMN "categoryId" TYPE UUID USING "categoryId"::UUID;
+ALTER TABLE "TeamMember" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "ConservationProject" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "ContactSubmission" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "SiteSetting" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "FAQ" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "AuditLog" ALTER COLUMN "id" TYPE UUID USING "id"::UUID;
+ALTER TABLE "AuditLog" ALTER COLUMN "actorId" TYPE UUID USING "actorId"::UUID;
+
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Program" ADD CONSTRAINT "Program_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ProgramCategory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Article" ADD CONSTRAINT "Article_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ArticleCategory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Article" ADD CONSTRAINT "Article_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "GalleryImage" ADD CONSTRAINT "GalleryImage_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "GalleryCategory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "AuditLog" ADD CONSTRAINT "AuditLog_actorId_fkey" FOREIGN KEY ("actorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

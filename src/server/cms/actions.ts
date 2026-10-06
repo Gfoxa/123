@@ -14,7 +14,7 @@ function safeError(error: unknown) {
 }
 
 export async function saveCmsAction(entity: CmsEntity, formData: FormData) {
-  if (!["program", "artikel", "galeri", "tim", "konservasi"].includes(entity)) redirect("/admin");
+  if (!["program", "artikel", "galeri", "tim", "konservasi", "faq"].includes(entity)) redirect("/admin");
   const session = await requireAdmin();
   try {
     await saveCmsEntity(entity, session.user.id, formData);
@@ -27,6 +27,7 @@ export async function saveCmsAction(entity: CmsEntity, formData: FormData) {
   if (entity === "galeri") revalidatePath("/galeri");
   if (entity === "konservasi") revalidatePath("/konservasi");
   if (entity === "tim") revalidatePath("/tentang-kami");
+  if (entity === "faq") revalidatePath("/faq");
   redirect(adminPath(entity));
 }
 

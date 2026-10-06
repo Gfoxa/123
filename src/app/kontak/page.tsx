@@ -4,9 +4,14 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ContactForm } from "@/components/forms/contact-form";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { getPublicPrograms, getPublicSettings } from "@/server/cms/public-content";
-import { pageMetadata } from "@/lib/seo";
+import { hasConfiguredOrganizationIdentity, pageMetadata, robotsForDemoContent } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Kontak dan Konsultasi Program", "Informasi kontak Ruang Rimba. Lengkapi alamat, email, WhatsApp, dan area layanan resmi sebelum situs dipublikasikan.", "/kontak");
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getPublicSettings();
+  const hasOfficialContact = Boolean(settings.email || settings.whatsapp || settings.address || settings.operationalArea);
+  const isDemo = !hasConfiguredOrganizationIdentity(settings.organizationName, settings.description) || !hasOfficialContact;
+  return { ...pageMetadata("Kontak dan Konsultasi Program", "Hubungi organisasi untuk membicarakan program outdoor, pembelajaran alam, dan konservasi.", "/kontak"), robots: robotsForDemoContent(isDemo) };
+}
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ program?: string }> }) {
   const [query, { items: programs }, settings] = await Promise.all([searchParams, getPublicPrograms(), getPublicSettings()]);

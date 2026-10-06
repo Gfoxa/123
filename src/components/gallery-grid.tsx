@@ -20,7 +20,7 @@ export function GalleryGrid({ items, isDemo = true }: { items: GalleryItem[]; is
 
   return (
     <>
-      <div className="gallery-filters" aria-label="Filter kategori galeri">
+      <div className="gallery-filters" role="group" aria-label="Filter kategori galeri">
         {categories.map((item) => (
           <button key={item} type="button" aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>
         ))}
