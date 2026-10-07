@@ -26,7 +26,7 @@ function lines(value: string | null | undefined) { return value?.split("\n").map
 function cmsProgram(row: Awaited<ReturnType<typeof prisma.program.findFirst>> & { category?: { name: string } | null }): Program | null {
   if (!row) return null;
   const activities = lines(row.activities);
-  const fallbackImage = "/images/program-adventure.svg";
+  const fallbackImage = "/images/demo-forest-trail.webp";
   return {
     slug: row.slug, title: row.title, category: row.category?.name ?? "Program",
     image: row.heroImage || fallbackImage, imageAlt: row.heroImageAlt || `Gambar ${row.title}`,
@@ -40,7 +40,7 @@ function cmsArticle(row: NonNullable<Awaited<ReturnType<typeof prisma.article.fi
   const body = row.content.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
   return {
     slug: row.slug, title: row.title, excerpt: row.excerpt, category: row.category?.name ?? "Artikel",
-    coverImage: row.coverImage || "/images/story-nature.svg", coverAlt: row.coverImageAlt || `Gambar ${row.title}`,
+    coverImage: row.coverImage || "/images/demo-river.webp", coverAlt: row.coverImageAlt || `Gambar ${row.title}`,
     author: row.authorName || "Tim Ruang Rimba", authorName: row.authorName || undefined,
     publishedAt: row.publishedAt?.toLocaleDateString("id-ID") ?? "", publishedAtIso: row.publishedAt?.toISOString(),
     sections: [{ heading: row.title, paragraphs: body }],

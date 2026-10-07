@@ -46,7 +46,7 @@ export default async function HomePage() {
             <ButtonLink href="#program" variant="light">Jelajahi program <span aria-hidden="true">↗</span></ButtonLink>
             <ButtonLink href="/tentang-kami" variant="outline">Kenali kami <span aria-hidden="true">↗</span></ButtonLink>
           </div>
-          <p className="hero__note">Visual ilustrasi demo · ganti dengan foto kegiatan organisasi</p>
+          <p className="hero__note">Foto demo · ganti dengan dokumentasi kegiatan organisasi</p>
         </div>
         <div className="hero__index" aria-hidden="true"><span>01</span><span className="hero__index-line" /><span>Alam sebagai ruang belajar</span></div>
       </section>
@@ -63,8 +63,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="intro__image-wrap">
-            <Image src="/images/intro-landscape.svg" alt="Placeholder ilustrasi perbukitan hijau dan jalur setapak" fill sizes="(max-width: 800px) 90vw, 36vw" />
-            <span className="image-caption">Ilustrasi demo, bukan dokumentasi kegiatan</span>
+            <Image src="/images/demo-forest-trail.webp" alt="Foto demo: pendaki menyusuri jalur hutan berkabut; bukan dokumentasi Ruang Rimba" fill sizes="(max-width: 800px) 90vw, 36vw" />
+            <span className="image-caption">Foto demo, bukan dokumentasi kegiatan Ruang Rimba</span>
           </div>
         </div>
       </section>
@@ -82,7 +82,7 @@ export default async function HomePage() {
 
       <section className="manifesto" id="konservasi">
         <div className="manifesto__visual">
-          <Image src="/images/activity-river.svg" alt="Ilustrasi demo sungai di tengah lanskap hutan" fill sizes="100vw" />
+          <Image src="/images/demo-river.webp" alt="Foto demo air terjun dan hutan; bukan dokumentasi Ruang Rimba" fill sizes="100vw" />
           <div className="manifesto__shade" />
         </div>
         <div className="container manifesto__content">
@@ -91,7 +91,7 @@ export default async function HomePage() {
           <p>Setiap perjalanan di alam adalah kesempatan untuk belajar cara merawatnya bersama.</p>
           <ButtonLink href="/konservasi" variant="light">Lihat kegiatan konservasi <span aria-hidden="true">↗</span></ButtonLink>
         </div>
-        <span className="manifesto__caption">Ilustrasi demo · visual konservasi aktual perlu ditambahkan</span>
+        <span className="manifesto__caption">Foto demo, bukan dokumentasi kegiatan Ruang Rimba</span>
       </section>
 
       <section className="values section-pad" id="nilai">
@@ -130,7 +130,7 @@ export default async function HomePage() {
       <section className="gallery-journal section-pad" aria-labelledby="gallery-title">
         <div className="container">
           <span className="visually-hidden" id="gallery-title">Galeri kegiatan</span>
-          <div className="section-topline"><span>Jurnal visual</span><span>{galleryDemo ? "Ilustrasi demo, bukan dokumentasi kegiatan" : "Dokumentasi kegiatan organisasi"}</span></div>
+          <div className="section-topline"><span>Jurnal visual</span><span>{galleryDemo ? "Foto demo, bukan dokumentasi kegiatan Ruang Rimba" : "Dokumentasi kegiatan organisasi"}</span></div>
           <div className="gallery-journal__heading"><SectionHeading title="Fragmen perjalanan." description="Sekilas tentang pengalaman luar ruang yang dapat dirancang bersama." /><ButtonLink href="/galeri" variant="outline">Kunjungi galeri <span aria-hidden="true">↗</span></ButtonLink></div>
           <GalleryPreview items={galleryItems.slice(0, 3)} isDemo={galleryDemo} />
         </div>

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const fields: AdminField[] = [
   { name: "title", label: "Judul artikel", required: true }, { name: "slug", label: "Slug URL", required: true },
   { name: "excerpt", label: "Ringkasan", kind: "textarea", required: true }, { name: "content", label: "Isi artikel", kind: "textarea", required: true },
-  { name: "coverImage", label: "Path gambar lokal (/images/...)" }, { name: "coverImageAlt", label: "Teks alternatif gambar" },
+  { name: "coverImage", label: "Foto sampul", kind: "image" }, { name: "coverImageAlt", label: "Teks alternatif gambar" },
   { name: "category", label: "Kategori", required: true }, { name: "authorName", label: "Nama penulis" },
   { name: "status", label: "Status", kind: "select", options: ["DRAFT", "PUBLISHED", "ARCHIVED"] },
 ];

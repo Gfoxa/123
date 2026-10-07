@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const fields: AdminField[] = [
   { name: "title", label: "Nama program", required: true }, { name: "slug", label: "Slug URL", required: true, hint: "huruf kecil dan tanda hubung" },
   { name: "category", label: "Kategori", required: true }, { name: "shortDescription", label: "Deskripsi singkat", kind: "textarea", required: true },
-  { name: "description", label: "Deskripsi lengkap", kind: "textarea", required: true }, { name: "heroImage", label: "Path gambar lokal (/images/...)" },
+  { name: "description", label: "Deskripsi lengkap", kind: "textarea", required: true }, { name: "heroImage", label: "Foto program", kind: "image" },
   { name: "heroImageAlt", label: "Teks alternatif gambar" }, { name: "duration", label: "Durasi" }, { name: "location", label: "Lokasi" },
   { name: "participantCount", label: "Jumlah peserta" }, { name: "difficulty", label: "Tingkat kesulitan" },
   { name: "activities", label: "Aktivitas (satu per baris)", kind: "textarea" }, { name: "included", label: "Termasuk (satu per baris)", kind: "textarea" },

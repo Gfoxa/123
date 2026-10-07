@@ -13,7 +13,7 @@ export default async function GalleryPage() {
   const { items, isDemo } = await getPublicGallery();
   return (
     <main id="konten">
-      <PublicPageHeader eyebrow="Galeri" title="Setiap kegiatan menyimpan cerita." description="Ruang dokumentasi untuk pengalaman di lapangan. Seluruh visual yang tampil sekarang adalah ilustrasi demo dan akan diganti dengan foto berizin." breadcrumbs={[{ label: "Galeri" }]} />
+      <PublicPageHeader eyebrow="Galeri" title="Setiap kegiatan menyimpan cerita." description="Ruang dokumentasi untuk pengalaman di lapangan. Foto yang tampil adalah contoh, bukan dokumentasi kegiatan organisasi. Ganti dengan foto kegiatan yang telah mendapat izin." breadcrumbs={[{ label: "Galeri" }]} backgroundSrc="/images/demo-team-building.webp" />
       <section className="gallery-section section-pad"><div className="container"><GalleryGrid items={items} isDemo={isDemo} /></div></section>
     </main>
   );

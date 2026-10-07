@@ -1,7 +1,13 @@
 import type { ReactNode } from "react";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 
-export type AdminField = { name: string; label: string; kind?: "text" | "email" | "url" | "textarea" | "select" | "number" | "date"; required?: boolean; options?: (string | { value: string; label: string })[]; hint?: string };
+export type AdminField = { name: string; label: string; kind?: "text" | "email" | "url" | "textarea" | "select" | "number" | "date" | "image"; required?: boolean; options?: (string | { value: string; label: string })[]; hint?: string };
 export type AdminRow = Record<string, string>;
+
+function AdminFieldControl({ field, value = "" }: { field: AdminField; value?: string }) {
+  if (field.kind === "image") return <div className="admin-form-field"><span className="admin-form-label">{field.label}</span>{field.hint && <small>{field.hint}</small>}<ImageUploadField name={field.name} label={field.label} value={value} required={field.required} /></div>;
+  return <label>{field.label}{field.hint && <small>{field.hint}</small>}<AdminInput field={field} value={value} /></label>;
+}
 
 function AdminInput({ field, value = "" }: { field: AdminField; value?: string }) {
   if (field.kind === "textarea") return <textarea name={field.name} defaultValue={value} required={field.required} rows={4} />;
@@ -15,7 +21,7 @@ export function CmsManager({ title, description, fields, rows, action, error, ch
 }) {
   return <div className="admin-content"><header className="admin-page-header"><div><p className="eyebrow">Pengelolaan konten</p><h1>{title}</h1><p>{description}</p></div><span className="admin-count">{rows.length} item</span></header>
     {error && <p className="admin-alert" role="alert">{error}</p>}{children}
-    <section className="admin-panel"><h2>Tambah konten</h2><form action={action} className="admin-grid-form">{fields.map((field) => <label key={field.name}>{field.label}{field.hint && <small>{field.hint}</small>}<AdminInput field={field} /></label>)}<button className="admin-button">Simpan konten</button></form></section>
-    <section className="admin-panel"><h2>Konten tersimpan</h2>{rows.length === 0 ? <p>Belum ada konten CMS. Konten demo publik tetap tersedia sampai ada konten terbit.</p> : <div className="admin-records">{rows.map((row) => <details className="admin-record" key={row.id}><summary><strong>{row.title || row.name || row.question}</strong><span>{row.status ?? (row.published === "true" ? "Terbit" : row.published === "false" ? "Draf" : "")}</span></summary><form action={action} className="admin-grid-form"><input type="hidden" name="id" value={row.id} />{fields.map((field) => <label key={field.name}>{field.label}<AdminInput field={field} value={row[field.name]} /></label>)}<button className="admin-button">Simpan perubahan</button></form><div className="admin-record__actions">{allowArchive && <form action={action}><input type="hidden" name="id" value={row.id} /><input type="hidden" name="_intent" value="archive" /><button className="admin-archive">Arsipkan</button></form>}{allowDelete && <form action={action}><input type="hidden" name="id" value={row.id} /><input type="hidden" name="_intent" value="delete" /><button className="admin-delete">Hapus permanen</button></form>}</div></details>)}</div>}</section>
+    <section className="admin-panel"><h2>Tambah konten</h2><form action={action} className="admin-grid-form">{fields.map((field) => <AdminFieldControl key={field.name} field={field} />)}<button className="admin-button">Simpan konten</button></form></section>
+    <section className="admin-panel"><h2>Konten tersimpan</h2>{rows.length === 0 ? <p>Belum ada konten CMS. Konten demo publik tetap tersedia sampai ada konten terbit.</p> : <div className="admin-records">{rows.map((row) => <details className="admin-record" key={row.id}><summary><strong>{row.title || row.name || row.question}</strong><span>{row.status ?? (row.published === "true" ? "Terbit" : row.published === "false" ? "Draf" : "")}</span></summary><form action={action} className="admin-grid-form"><input type="hidden" name="id" value={row.id} />{fields.map((field) => <AdminFieldControl key={field.name} field={field} value={row[field.name]} />)}<button className="admin-button">Simpan perubahan</button></form><div className="admin-record__actions">{allowArchive && <form action={action}><input type="hidden" name="id" value={row.id} /><input type="hidden" name="_intent" value="archive" /><button className="admin-archive">Arsipkan</button></form>}{allowDelete && <form action={action}><input type="hidden" name="id" value={row.id} /><input type="hidden" name="_intent" value="delete" /><button className="admin-delete">Hapus permanen</button></form>}</div></details>)}</div>}</section>
   </div>;
 }

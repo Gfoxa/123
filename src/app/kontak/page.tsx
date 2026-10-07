@@ -29,7 +29,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
 
   return (
     <main id="konten">
-      <PublicPageHeader eyebrow="Kontak" title="Mari bicarakan pengalaman yang ingin dibuat." description="Ceritakan kebutuhan kelompok atau minat untuk ikut kegiatan. Permintaan akan tersimpan agar dapat ditinjau administrator." breadcrumbs={[{ label: "Kontak" }]} />
+      <PublicPageHeader eyebrow="Kontak" title="Mari bicarakan pengalaman yang ingin dibuat." description="Ceritakan kebutuhan kelompok atau minat untuk ikut kegiatan. Permintaan akan tersimpan agar dapat ditinjau administrator." breadcrumbs={[{ label: "Kontak" }]} backgroundSrc="/images/demo-team-building.webp" />
       <section className="contact-page-section section-pad"><div className="container contact-page-grid">
         <div>
           <SectionHeading eyebrow="Hubungi organisasi" title="Kami siap mendengar rencanamu." description="Bagikan beberapa detail agar permintaan programmu lebih mudah dipahami." />

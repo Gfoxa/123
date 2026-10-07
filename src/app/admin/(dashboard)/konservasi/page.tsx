@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const fields: AdminField[] = [
   { name: "title", label: "Nama proyek", required: true }, { name: "slug", label: "Slug URL", required: true },
   { name: "summary", label: "Ringkasan", kind: "textarea", required: true }, { name: "description", label: "Deskripsi", kind: "textarea", required: true },
-  { name: "imageUrl", label: "URL/path gambar" }, { name: "imageAlt", label: "Teks alternatif" },
+  { name: "imageUrl", label: "Foto proyek", kind: "image" }, { name: "imageAlt", label: "Teks alternatif" },
   { name: "location", label: "Lokasi" }, { name: "startedAt", label: "Tanggal mulai", kind: "date" },
   { name: "status", label: "Status", kind: "select", options: ["DRAFT", "PUBLISHED", "ARCHIVED"] },
 ];

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db/prisma";
 export const dynamic = "force-dynamic";
 const fields: AdminField[] = [
   { name: "organizationName", label: "Nama organisasi", required: true }, { name: "description", label: "Deskripsi", kind: "textarea", required: true },
-  { name: "logoUrl", label: "URL/path logo" }, { name: "email", label: "Email", kind: "text" }, { name: "phone", label: "Telepon" },
+  { name: "logoUrl", label: "Logo organisasi", kind: "image" }, { name: "email", label: "Email", kind: "text" }, { name: "phone", label: "Telepon" },
   { name: "whatsapp", label: "WhatsApp (format internasional, tanpa +)" }, { name: "address", label: "Alamat", kind: "textarea" },
   { name: "operationalArea", label: "Area operasional" }, { name: "instagramUrl", label: "Instagram" },
   { name: "facebookUrl", label: "Facebook" }, { name: "youtubeUrl", label: "YouTube" },

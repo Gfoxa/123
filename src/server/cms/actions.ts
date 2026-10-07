@@ -24,7 +24,7 @@ export async function saveCmsAction(entity: CmsEntity, formData: FormData) {
   revalidatePath(adminPath(entity));
   if (entity === "program") { revalidatePath("/program"); revalidatePath("/program/[slug]", "page"); revalidatePath("/sitemap.xml"); revalidatePath("/", "page"); }
   if (entity === "artikel") { revalidatePath("/artikel"); revalidatePath("/artikel/[slug]", "page"); revalidatePath("/sitemap.xml"); revalidatePath("/", "page"); }
-  if (entity === "galeri") revalidatePath("/galeri");
+  if (entity === "galeri") { revalidatePath("/galeri"); revalidatePath("/", "page"); }
   if (entity === "konservasi") revalidatePath("/konservasi");
   if (entity === "tim") revalidatePath("/tentang-kami");
   if (entity === "faq") revalidatePath("/faq");

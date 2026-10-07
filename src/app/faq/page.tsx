@@ -23,7 +23,7 @@ export default async function FAQPage() {
           acceptedAnswer: { "@type": "Answer", text: item.answer },
         })),
       }} />}
-      <PublicPageHeader eyebrow="Pertanyaan umum" title="Sebelum merencanakan kegiatan." description={isDemo ? "Informasi operasional organisasi belum tersedia. Jawaban berikut adalah contoh yang perlu dikonfirmasi." : "Jawaban atas pertanyaan seputar program dan kegiatan organisasi."} breadcrumbs={[{ label: "FAQ" }]} />
+      <PublicPageHeader eyebrow="Pertanyaan umum" title="Sebelum merencanakan kegiatan." description={isDemo ? "Informasi operasional organisasi belum tersedia. Jawaban berikut adalah contoh yang perlu dikonfirmasi." : "Jawaban atas pertanyaan seputar program dan kegiatan organisasi."} breadcrumbs={[{ label: "FAQ" }]} backgroundSrc="/images/demo-camp.webp" />
       <section className="faq-page-section section-pad"><div className="container faq-page-grid">{categories.map((category) => <section className="faq-category" key={category}><h2>{category}</h2><div className="faq-list">{items.filter((item) => item.category === category).map((item) => <details key={`${category}-${item.question}`}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section>)}</div></section>
     </main>
   );

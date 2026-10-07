@@ -9,6 +9,7 @@ build/
 coverage/
 .env*
 !.env.example
+public/uploads/
 prisma/*.db
 prisma/*.db-journal
 prisma/*.db-shm

@@ -5,7 +5,7 @@ import { toAdminRows } from "@/server/cms/admin-view";
 
 export const dynamic = "force-dynamic";
 const fields: AdminField[] = [
-  { name: "title", label: "Nama kegiatan", required: true }, { name: "imageUrl", label: "Path gambar lokal (/images/...)", required: true },
+  { name: "title", label: "Nama kegiatan", required: true }, { name: "imageUrl", label: "Foto kegiatan", kind: "image", required: true },
   { name: "alt", label: "Teks alternatif", required: true }, { name: "caption", label: "Keterangan" },
   { name: "category", label: "Kategori", required: true }, { name: "status", label: "Status", kind: "select", options: ["DRAFT", "PUBLISHED", "ARCHIVED"] },
 ];
